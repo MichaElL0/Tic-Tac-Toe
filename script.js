@@ -6,10 +6,15 @@ const Gameboard = (() => {
     ];
 
     const placeMarker = (index, mark) => {
-        
+        if(gameboard[index] === "") {
+            gameboard[index] = mark;
+        }
+        else {
+            console.log("Spot is already taken");
+        }
     }
 
-    return { };
+    return { placeMarker };
 })();
 
 const createPlayer = (name, mark) => {
