@@ -10,11 +10,20 @@ const Gameboard = (() => {
             gameboard[index] = mark;
         }
         else {
-            console.log("Spot is already taken");
+            console.log("Spot is already taken, choose another spot");
         }
     }
 
-    return { placeMarker };
+    const showTheBoard = () => {
+        console.log("Current board is:");
+        console.log(gameboard.slice(0, 3));
+        console.log(gameboard.slice(3, 6));
+        console.log(gameboard.slice(6, 9));
+        console.log("--------------------");
+        console.log("");
+    };
+
+    return { placeMarker, showTheBoard };
 })();
 
 const createPlayer = (name, mark) => {
@@ -39,9 +48,16 @@ const GameController = (() => {
 
     const getCurrentPlayer = () => currentPlayer;
 
-    const playRound = () => {
-
+    const playRound = (index) => {
+        Gameboard.showTheBoard();
+        Gameboard.placeMarker(index, currentPlayer.mark);
+        switchPlayerTurn();
+        Gameboard.showTheBoard();
     }
 
-    return { getCurrentPlayer,  };
+    return { getCurrentPlayer, playRound };
 })();
+
+GameController.playRound(0);
+GameController.playRound(5);
+GameController.playRound(2);
