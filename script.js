@@ -1,5 +1,13 @@
 const Gameboard = (() => {
-    const gameboard = ["", "", "", "", "", "", "", "", ""];
+    const gameboard = [
+        "", "", "",
+        "", "", "",
+        "", "", ""
+    ];
+
+    const placeMarker = (index, mark) => {
+        
+    }
 
     return { };
 })();
@@ -18,5 +26,17 @@ const GameController = (() => {
     const player1 = createPlayer("Player 1", "X");
     const player2 = createPlayer("Player 2", "O");
 
-    return { };
+    let currentPlayer = player1;
+
+    const switchPlayerTurn = () => {
+        currentPlayer = currentPlayer === player1 ? player2 : player1;
+    };
+
+    const getCurrentPlayer = () => currentPlayer;
+
+    const playRound = () => {
+
+    }
+
+    return { getCurrentPlayer,  };
 })();
