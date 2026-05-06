@@ -5,12 +5,25 @@ const Gameboard = (() => {
         "", "", ""
     ];
 
+    const winningCombinations = [
+        [0, 1, 2], // top row
+        [3, 4, 5], // middle row
+        [6, 7, 8], // bottom row
+        [0, 3, 6], // left column
+        [1, 4, 7], // middle column
+        [2, 5, 8], // right column
+        [0, 4, 8], // diagonal top-left to bottom-right
+        [2, 4, 6], // diagonal top-right to bottom-left
+    ];
+
     const placeMarker = (index, mark) => {
         if(gameboard[index] === "") {
             gameboard[index] = mark;
+            return true;
         }
         else {
             console.log("Spot is already taken, choose another spot");
+            return false;
         }
     }
 
@@ -23,7 +36,17 @@ const Gameboard = (() => {
         console.log("");
     };
 
-    return { placeMarker, showTheBoard };
+    const checkWinner = (mark) => {
+        return winningCombinations.some(x => {
+            return x.every(index => gameboard[index] === mark);
+        });
+    }
+
+    const checkTie = () => {
+        return gameboard.every(x => x !== "");
+    }
+
+    return { placeMarker, showTheBoard, checkWinner, checkTie };
 })();
 
 const createPlayer = (name, mark) => {
@@ -50,14 +73,38 @@ const GameController = (() => {
 
     const playRound = (index) => {
         Gameboard.showTheBoard();
-        Gameboard.placeMarker(index, currentPlayer.mark);
-        switchPlayerTurn();
+        
+        if(!Gameboard.placeMarker(index, currentPlayer.mark)) return;
+
+        if(Gameboard.checkWinner(currentPlayer.mark)) {
+            console.log(`${currentPlayer.name} has won the game`);
+            Gameboard.showTheBoard();
+            return;
+        }
+        else if(Gameboard.checkTie()) {
+            console.log("There is a TIE!");
+            Gameboard.showTheBoard();
+            return;
+        }
+        else {
+            switchPlayerTurn();
+        }
         Gameboard.showTheBoard();
+
     }
 
     return { getCurrentPlayer, playRound };
 })();
 
-GameController.playRound(0);
-GameController.playRound(5);
+GameController.playRound(1);
+GameController.playRound(1);
+GameController.playRound(4);
+GameController.playRound(7);
 GameController.playRound(2);
+GameController.playRound(6);
+GameController.playRound(8);
+GameController.playRound(5);
+GameController.playRound(3);
+GameController.playRound(0);
+
+
