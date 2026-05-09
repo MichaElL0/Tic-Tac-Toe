@@ -36,6 +36,10 @@ const Gameboard = (() => {
         console.log("");
     };
 
+    const getTheBoard = () => {
+        return gameboard;
+    }
+
     const checkWinner = (mark) => {
         return winningCombinations.some(x => {
             return x.every(index => gameboard[index] === mark);
@@ -46,7 +50,7 @@ const Gameboard = (() => {
         return gameboard.every(x => x !== "");
     }
 
-    return { placeMarker, showTheBoard, checkWinner, checkTie };
+    return { placeMarker, showTheBoard, checkWinner, checkTie, getTheBoard };
 })();
 
 const createPlayer = (name, mark) => {
