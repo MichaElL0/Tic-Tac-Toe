@@ -97,26 +97,39 @@ const GameController = (() => {
 })();
 
 
-const displayController = (() => {
+const DisplayController = (() => {
     const board = document.querySelector("#board");
-    for (let i = 0; i < 9; i++) {
+
+    const renderBoard = () => {
+        board.textContent = "";
+        for (let i = 0; i < 9; i++) {
         const square = document.createElement("div");
         square.classList.add("square")
         square.dataset.index = i;
         board.appendChild(square);
+        }
+
+        const squares = document.querySelectorAll(".square")
+        squares.forEach(x => {
+            x.addEventListener("click", e => {
+                GameController.playRound(+e.target.dataset.index);
+            });
+        })
     }
 
+    const renderCurrentPlayer = () => {
+        const status = document.querySelector("#status");
+
+        status.textContent = "Current player is: " + GameController.getCurrentPlayer().name;
+    };
+    
+
+    return { renderBoard, renderCurrentPlayer }
 })();
 
-GameController.playRound(1);
-GameController.playRound(1);
-GameController.playRound(4);
-GameController.playRound(7);
-GameController.playRound(2);
-GameController.playRound(6);
-GameController.playRound(8);
-GameController.playRound(5);
-GameController.playRound(3);
-GameController.playRound(0);
+DisplayController.renderBoard();
+DisplayController.renderCurrentPlayer();
+
+
 
 
