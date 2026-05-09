@@ -96,6 +96,18 @@ const GameController = (() => {
     return { getCurrentPlayer, playRound };
 })();
 
+
+const displayController = (() => {
+    const board = document.querySelector("#board");
+    for (let i = 0; i < 9; i++) {
+        const square = document.createElement("div");
+        square.classList.add("square")
+        square.dataset.index = i;
+        board.appendChild(square);
+    }
+
+})();
+
 GameController.playRound(1);
 GameController.playRound(1);
 GameController.playRound(4);
