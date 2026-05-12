@@ -69,3 +69,18 @@ h1 {
   letter-spacing: 3px;
   font-weight: 800;
 }
+
+button {
+  padding: 0.6rem 1.5rem;
+  margin: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-radius: 20px;
+
+  -webkit-box-shadow: 3px 3px 1px 5px #363636; 
+    box-shadow: 3px 3px 1px 0px #363636;
+}
+
+button:hover {
+  box-shadow: none;
+}

@@ -68,8 +68,8 @@ const createPlayer = (name, mark) => {
 }
 
 const GameController = (() => {
-    const player1 = createPlayer("Player 1", "X");
-    const player2 = createPlayer("Player 2", "O");
+    let player1 = createPlayer("Player 1", "X");
+    let player2 = createPlayer("Player 2", "O");
 
     let currentPlayer = player1;
     let winner = null;
@@ -116,7 +116,13 @@ const GameController = (() => {
         currentPlayer = player1;
     };
 
-    return { getCurrentPlayer, playRound, getWinner, getTie, resetGame };
+    const startGame = (name1, name2) => {
+        player1 = createPlayer(name1, "X");
+        player2 = createPlayer(name2, "O");
+        resetGame();
+    }
+
+    return { getCurrentPlayer, playRound, getWinner, getTie, resetGame, startGame };
 })();
 
 
