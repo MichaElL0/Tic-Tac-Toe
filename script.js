@@ -27,15 +27,6 @@ const Gameboard = (() => {
         }
     }
 
-    const showTheBoard = () => {
-        console.log("Current board is:");
-        console.log(gameboard.slice(0, 3));
-        console.log(gameboard.slice(3, 6));
-        console.log(gameboard.slice(6, 9));
-        console.log("--------------------");
-        console.log("");
-    };
-
     const getTheBoard = () => {
         return gameboard;
     }
@@ -54,16 +45,13 @@ const Gameboard = (() => {
         gameboard.forEach((x, index) => gameboard[index] = "");
     };
 
-    return { placeMarker, showTheBoard, checkWinner, checkTie, getTheBoard, resetBoard };
+    return { placeMarker, checkWinner, checkTie, getTheBoard, resetBoard };
 })();
 
 const createPlayer = (name, mark) => {
     return {
         name: name,
-        mark: mark,
-        sayInfo() {
-            console.log(`My name is ${name} and my mark is ${mark}`);
-        }
+        mark: mark
     };
 }
 
@@ -86,26 +74,22 @@ const GameController = (() => {
 
     const playRound = (index) => {
         if(winner || tie) return;
-        Gameboard.showTheBoard();
         
         if(!Gameboard.placeMarker(index, currentPlayer.mark)) return;
 
         if(Gameboard.checkWinner(currentPlayer.mark)) {
             winner = currentPlayer.name;
-            console.log(`${winner} has won the game`);
-            Gameboard.showTheBoard();
+
             return;
         }
         else if(Gameboard.checkTie()) {
             tie = true;
-            console.log("There is a TIE!");
-            Gameboard.showTheBoard();
+
             return;
         }
         else {
             switchPlayerTurn();
         }
-        Gameboard.showTheBoard();
 
     }
 
@@ -131,6 +115,7 @@ const DisplayController = (() => {
     const result = document.querySelector("#result");
     const reset = document.querySelector("#reset");
     const status = document.querySelector("#status");
+    const start = document.querySelector("#start");
 
     const renderBoard = () => {
         board.textContent = "";
@@ -161,8 +146,16 @@ const DisplayController = (() => {
         })
     }
 
+    start.addEventListener("click", e => {
+        const name1 = prompt("Enter Player 1 name:") || "Player 1";
+        const name2 = prompt("Enter Player 2 name:") || "Player 2";
+        GameController.startGame(name1, name2);
+        result.textContent = "";
+        renderBoard();
+        renderCurrentPlayer();
+    });
+
     reset.addEventListener("click", e => {
-        console.log("reset");
         GameController.resetGame();
         result.textContent = "";
         renderBoard();
@@ -170,7 +163,7 @@ const DisplayController = (() => {
     });
 
     const renderCurrentPlayer = () => {
-        status.textContent = "Current player is: " + GameController.getCurrentPlayer().name;
+        status.textContent = "It's " + GameController.getCurrentPlayer().name + "'s turn.";
     };
     
 
