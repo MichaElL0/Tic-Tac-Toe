@@ -68,6 +68,11 @@ const GameController = (() => {
     const player2 = createPlayer("Player 2", "O");
 
     let currentPlayer = player1;
+    let winner = null;
+    let tie = false;
+
+    const getWinner = () => winner;
+    const getTie = () => tie;
 
     const switchPlayerTurn = () => {
         currentPlayer = currentPlayer === player1 ? player2 : player1;
@@ -81,7 +86,8 @@ const GameController = (() => {
         if(!Gameboard.placeMarker(index, currentPlayer.mark)) return;
 
         if(Gameboard.checkWinner(currentPlayer.mark)) {
-            console.log(`${currentPlayer.name} has won the game`);
+            winner = currentPlayer.name;
+            console.log(`${winner} has won the game`);
             Gameboard.showTheBoard();
             return;
         }
@@ -97,7 +103,7 @@ const GameController = (() => {
 
     }
 
-    return { getCurrentPlayer, playRound };
+    return { getCurrentPlayer, playRound, getWinner, getTie };
 })();
 
 
@@ -122,6 +128,16 @@ const DisplayController = (() => {
                 GameController.playRound(+e.target.dataset.index);
                 renderBoard();
                 renderCurrentPlayer();
+                if(GameController.getWinner()) {
+                    const result = document.querySelector("#result");
+                    result.textContent = `${GameController.getWinner()} has won the game!`;
+                    return;
+                }
+                if(GameController.getTie()) {
+                    const result = document.querySelector("#result");
+                    result.textContent = "The game is a tie!";
+                    return;
+                }
             });
         })
     }

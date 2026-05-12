@@ -61,3 +61,11 @@ h1 {
   padding: 1rem;
   font-size: 1.5rem;
 }
+
+#result {
+  padding: 1rem;
+  font-size: 2rem;
+  color: royalblue;
+  letter-spacing: 3px;
+  font-weight: 800;
+}
