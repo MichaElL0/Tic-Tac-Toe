@@ -50,7 +50,11 @@ const Gameboard = (() => {
         return gameboard.every(x => x !== "");
     }
 
-    return { placeMarker, showTheBoard, checkWinner, checkTie, getTheBoard };
+    const resetBoard = () => {
+        gameboard.forEach((x, index) => gameboard[index] = "");
+    };
+
+    return { placeMarker, showTheBoard, checkWinner, checkTie, getTheBoard, resetBoard };
 })();
 
 const createPlayer = (name, mark) => {
@@ -81,6 +85,7 @@ const GameController = (() => {
     const getCurrentPlayer = () => currentPlayer;
 
     const playRound = (index) => {
+        if(winner || tie) return;
         Gameboard.showTheBoard();
         
         if(!Gameboard.placeMarker(index, currentPlayer.mark)) return;
@@ -92,6 +97,7 @@ const GameController = (() => {
             return;
         }
         else if(Gameboard.checkTie()) {
+            tie = true;
             console.log("There is a TIE!");
             Gameboard.showTheBoard();
             return;
@@ -103,12 +109,22 @@ const GameController = (() => {
 
     }
 
-    return { getCurrentPlayer, playRound, getWinner, getTie };
+    const resetGame = () => {
+        Gameboard.resetBoard();
+        winner = null;
+        tie = false;
+        currentPlayer = player1;
+    };
+
+    return { getCurrentPlayer, playRound, getWinner, getTie, resetGame };
 })();
 
 
 const DisplayController = (() => {
     const board = document.querySelector("#board");
+    const result = document.querySelector("#result");
+    const reset = document.querySelector("#reset");
+    const status = document.querySelector("#status");
 
     const renderBoard = () => {
         board.textContent = "";
@@ -121,7 +137,6 @@ const DisplayController = (() => {
             board.appendChild(square);
         };
 
-
         const squares = document.querySelectorAll(".square")
         squares.forEach(x => {
             x.addEventListener("click", e => {
@@ -129,12 +144,10 @@ const DisplayController = (() => {
                 renderBoard();
                 renderCurrentPlayer();
                 if(GameController.getWinner()) {
-                    const result = document.querySelector("#result");
                     result.textContent = `${GameController.getWinner()} has won the game!`;
                     return;
                 }
                 if(GameController.getTie()) {
-                    const result = document.querySelector("#result");
                     result.textContent = "The game is a tie!";
                     return;
                 }
@@ -142,9 +155,15 @@ const DisplayController = (() => {
         })
     }
 
-    const renderCurrentPlayer = () => {
-        const status = document.querySelector("#status");
+    reset.addEventListener("click", e => {
+        console.log("reset");
+        GameController.resetGame();
+        result.textContent = "";
+        renderBoard();
+        renderCurrentPlayer();
+    });
 
+    const renderCurrentPlayer = () => {
         status.textContent = "Current player is: " + GameController.getCurrentPlayer().name;
     };
     
